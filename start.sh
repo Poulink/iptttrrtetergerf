@@ -15,7 +15,7 @@ echo "file '$first_line'" >> /tmp/ffmplist.txt
 # запускаем nginx
 nginx -g "daemon off;" &
 
-# запускаем ffmpeg
+# запускаем ffmpeg для потока
 ffmpeg -f concat -safe 0 -protocol_whitelist "file,http,https,tcp,tls" \
 -i /tmp/ffmplist.txt -vf "scale=1280:720,format=yuv420p" \
 -c:v libx264 -preset veryfast -tune zerolatency -f flv rtmp://localhost/live/brunaut
