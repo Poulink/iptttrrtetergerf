@@ -6,5 +6,8 @@ RUN mkdir -p /tmp/hls
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ffmpeg -re -loop 1 -i https://i.ytimg.com/vi/skq6c96rw64/maxresdefault.jpg -c:v libx264 -t 86400 -pix_fmt yuv420p -f flv rtmp://localhost/live/brunaut & \
+CMD ffmpeg \
+    -f concat -safe 0 -i <(for url in $(cat images.txt); do echo "file '$url'"; done) \
+    -vf "scale=1280:720,format=yuv420p" \
+    -t 86400 -c:v libx264 -f flv rtmp://localhost/live/brunaut & \
     nginx -g "daemon off;"
